@@ -1,5 +1,5 @@
 -- check translation file to see if your language is available or add it.
-Lang = "English"
+Lang = "Ukrainian"
 
 Config = {}
 
@@ -1953,92 +1953,97 @@ Config.Teeth = {
 -- *TRANSLATE ["inside here"] below to your language*
 Config.FaceFeatures = {
     head = {
-        ["Head Width"] = { hash = 0x84D6, comp = "HeadSize" },
-        ["Face Width"] = { hash = 41396, comp = "FaceW" },
-        ["Face Depth"] = { hash = 12281, comp = "FaceD" },
-        ["Forehead Size"] = { hash = 13059, comp = "FaceS" },
-        ["Neck Width"] = { hash = 36277, comp = "NeckW" },
-        ["Neck Depth"] = { hash = 60890, comp = "NeckD" },
+        ["Ширина Голови"] = { hash = 0x84D6, comp = "HeadSize" },
+        ["Ширина Обличчя"] = { hash = 41396, comp = "FaceW" },
+        ["Глибина Обличчя"] = { hash = 12281, comp = "FaceD" },
+        ["Розмір Чола"] = { hash = 13059, comp = "FaceS" },
+        ["Ширина Шиї"] = { hash = 36277, comp = "NeckW" },
+        ["Глибина Шиї"] = { hash = 60890, comp = "NeckD" },
     },
 
     eyesandbrows = {
-        ["Brows Height"] = { hash = 0x3303, comp = "EyeBrowH" },
-        ["Brows Width"] = { hash = 0x2FF9, comp = "EyeBrowW" },
-        ["Brows Depth"] = { hash = 0x4AD1, comp = "EyeBrowD" },
-        ["Eyes Depth"] = { hash = 0xEE44, comp = "EyeD" },
-        ["Eyes Angle"] = { hash = 0xD266, comp = "EyeAng" },
-        ["Eyes Distance"] = { hash = 0xA54E, comp = "EyeDis" },
-        ["Eyes Height"] = { hash = 0xDDFB, comp = "EyeH" },
-        ["Eyelid Height"] = { hash = 0x8B2B, comp = "EyeLidH" },
-        ["Eyelid Width"] = { hash = 0x1B6B, comp = "EyeLidW" },
-        ["Eyelid Left O/Close"] = { hash = 52902, comp = "EyeLidL" },
-        ["Eyelid Right O/Close"] = { hash = 22421, comp = "EyeLidR" },
+        ["Висота Брів"] = { hash = 0x3303, comp = "EyeBrowH" },
+        ["Ширина Брів"] = { hash = 0x2FF9, comp = "EyeBrowW" },
+        ["Глибина Брів"] = { hash = 0x4AD1, comp = "EyeBrowD" },
+        ["Глибина Очей"] = { hash = 0xEE44, comp = "EyeD" },
+        ["Кут Очей"] = { hash = 0xD266, comp = "EyeAng" },
+        ["Відстань між Очима"] = { hash = 0xA54E, comp = "EyeDis" },
+        ["Висота Очей"] = { hash = 0xDDFB, comp = "EyeH" },
+        ["Висота Повіки"] = { hash = 0x8B2B, comp = "EyeLidH" },
+        ["Ширина Повіки"] = { hash = 0x1B6B, comp = "EyeLidW" },
+        ["Ліва Повіка Відкр/Закр"] = { hash = 52902, comp = "EyeLidL" },
+        ["Права Повіка Відкр/Закр"] = { hash = 22421, comp = "EyeLidR" },
     },
 
     ears = {
-        ["Ears Width"] = { hash = 0xC04F, comp = "EarsW" },
-        ["Ears Angle"] = { hash = 0xB6CE, comp = "EarsA" },
-        ["Ears Height"] = { hash = 0x2844, comp = "EarsH" },
-        ["Ears Depth"] = { hash = 0xED30, comp = "EarsD" },
+        ["Ширина Вух"] = { hash = 0xC04F, comp = "EarsW" },
+        ["Кут Вух"] = { hash = 0xB6CE, comp = "EarsA" },
+        ["Висота Вух"] = { hash = 0x2844, comp = "EarsH" },
+        ["Глибина Вух"] = { hash = 0xED30, comp = "EarsD" },
     },
+    
     cheek = {
-        ["CheekBone Height"] = { hash = 0x6A0B, comp = "CheekBonesH" },
-        ["CheekBone Width"] = { hash = 0xABCF, comp = "CheekBonesW" },
-        ["CheekBone Depth"] = { hash = 0x358D, comp = "CheekBonesD" },
+        ["Висота Вилиць"] = { hash = 0x6A0B, comp = "CheekBonesH" },
+        ["Ширина Вилиць"] = { hash = 0xABCF, comp = "CheekBonesW" },
+        ["Глибина Вилиць"] = { hash = 0x358D, comp = "CheekBonesD" },
     },
+    
     jaw = {
-        ["Jaw Height"] = { hash = 0x8D0A, comp = "JawH" },
-        ["Jaw Width"] = { hash = 0xEBAE, comp = "JawW" },
-        ["Jaw Depth"] = { hash = 0x1DF6, comp = "JawD" },
+        ["Висота Щелепи"] = { hash = 0x8D0A, comp = "JawH" },
+        ["Ширина Щелепи"] = { hash = 0xEBAE, comp = "JawW" },
+        ["Глибина Щелепи"] = { hash = 0x1DF6, comp = "JawD" },
     },
+    
     chin = {
-        ["Chin Height"] = { hash = 0x3C0F, comp = "ChinH" },
-        ["Chin Width"] = { hash = 0xC3B2, comp = "ChinW" },
-        ["Chin Depth"] = { hash = 0xE323, comp = "ChinD" },
+        ["Висота Підборіддя"] = { hash = 0x3C0F, comp = "ChinH" },
+        ["Ширина Підборіддя"] = { hash = 0xC3B2, comp = "ChinW" },
+        ["Глибина Підборіддя"] = { hash = 0xE323, comp = "ChinD" },
     },
+    
     nose = {
-        ["Nose Width"] = { hash = 0x6E7F, comp = "NoseW" },
-        ["Nose Size"] = { hash = 0x3471, comp = "NoseS" },
-        ["Nose Height"] = { hash = 0x03F5, comp = "NoseH" },
-        ["Nose Angle"] = { hash = 0x34B1, comp = "NoseAng" },
-        ["Nose Curvature"] = { hash = 0xF156, comp = "NoseC" },
-        ["Nose Distance"] = { hash = 0x561E, comp = "NoseDis" },
+        ["Ширина Носа"] = { hash = 0x6E7F, comp = "NoseW" },
+        ["Розмір Носа"] = { hash = 0x3471, comp = "NoseS" },
+        ["Висота Носа"] = { hash = 0x03F5, comp = "NoseH" },
+        ["Кут Носа"] = { hash = 0x34B1, comp = "NoseAng" },
+        ["Кривизна Носа"] = { hash = 0xF156, comp = "NoseC" },
+        ["Відстань Носа"] = { hash = 0x561E, comp = "NoseDis" },
     },
+    
     mouthandlips = {
-        ["Mouth Width"] = { hash = 0xF065, comp = "MouthW" },
-        ["Mouth Depth"] = { hash = 0xAA69, comp = "MouthD" },
-        ["Mouth DistanceX"] = { hash = 0x7AC3, comp = "MouthX" },
-        ["Mouth DistanceY"] = { hash = 0x410D, comp = "MouthY" },
-        ["Lip Upper Height"] = { hash = 0x1A00, comp = "ULiphH" },
-        ["Lip Upper Width"] = { hash = 0x91C1, comp = "ULiphW" },
-        ["Lip Upper Depth"] = { hash = 0xC375, comp = "ULiphD" },
-        ["Lip Lower Height"] = { hash = 0xBB4D, comp = "LLiphH" },
-        ["Lip Lower Width"] = { hash = 0xB0B0, comp = "LLiphW" },
-        ["Lip Lower Depth"] = { hash = 0x5D16, comp = "LLiphD" },
-        ["Mouth Corner Left Withd"] = { hash = 57350, comp = "MouthCLW" },
-        ["Mouth Corner Right Withd"] = { hash = 60292, comp = "MouthCRW" },
-        ["Mouth Corner Left Depth"] = { hash = 40950, comp = "MouthCLD" },
-        ["Mouth Corner Right Depth"] = { hash = 49299, comp = "MouthCRD" },
-        ["Mouth Corner Left Height"] = { hash = 46661, comp = "MouthCLH" },
-        ["Mouth Corner Right Height"] = { hash = 55718, comp = "MouthCRH" },
-        ["Mouth Corner Left Lips Distance"] = { hash = 22344, comp = "MouthCLLD" },
-        ["Mouth Corner Right Lips Distance"] = { hash = 9423, comp = "MouthCRLD" },
+        ["Ширина Рота"] = { hash = 0xF065, comp = "MouthW" },
+        ["Глибина Рота"] = { hash = 0xAA69, comp = "MouthD" },
+        ["Відстань Рота X"] = { hash = 0x7AC3, comp = "MouthX" },
+        ["Відстань Рота Y"] = { hash = 0x410D, comp = "MouthY" },
+        ["Висота Верхньої Губи"] = { hash = 0x1A00, comp = "ULiphH" },
+        ["Ширина Верхньої Губи"] = { hash = 0x91C1, comp = "ULiphW" },
+        ["Глибина Верхньої Губи"] = { hash = 0xC375, comp = "ULiphD" },
+        ["Висота Нижньої Губи"] = { hash = 0xBB4D, comp = "LLiphH" },
+        ["Ширина Нижньої Губи"] = { hash = 0xB0B0, comp = "LLiphW" },
+        ["Глибина Нижньої Губи"] = { hash = 0x5D16, comp = "LLiphD" },
+        ["Ширина Лівого Куточка Рота"] = { hash = 57350, comp = "MouthCLW" },
+        ["Ширина Правого Куточка Рота"] = { hash = 60292, comp = "MouthCRW" },
+        ["Глибина Лівого Куточка Рота"] = { hash = 40950, comp = "MouthCLD" },
+        ["Глибина Правого Куточка Рота"] = { hash = 49299, comp = "MouthCRD" },
+        ["Висота Лівого Куточка Рота"] = { hash = 46661, comp = "MouthCLH" },
+        ["Висота Правого Куточка Рота"] = { hash = 55718, comp = "MouthCRH" },
+        ["Відстань до Губ Лівого Куточка"] = { hash = 22344, comp = "MouthCLLD" },
+        ["Відстань до Губ Правого Куточка"] = { hash = 9423, comp = "MouthCRLD" },
     },
+    
     upperbody = {
-        ["Arms Size"] = { hash = 46032, comp = "ArmsS" },
-        ["Upper Shoulders Size"] = { hash = 50039, comp = "ShouldersS" },
-        ["Back Shoulders Thickness"] = { hash = 7010, comp = "ShouldersT" },
-        ["Back Muscles"] = { hash = 18046, comp = "ShouldersM" }, -- shoulder blades / back muscles
-        ["Chest Size"] = { hash = 27779, comp = "ChestS" },
-        ["Waist Width"] = { hash = 50460, comp = "WaistW" },
-        ["Hips Size"] = { hash = 49787, comp = "HipsS" }, -- hip width / stomach size
+        ["Розмір Рук"] = { hash = 46032, comp = "ArmsS" },
+        ["Розмір Верхньої Частини Плечей"] = { hash = 50039, comp = "ShouldersS" },
+        ["Товщина Задньої Частини Плечей"] = { hash = 7010, comp = "ShouldersT" },
+        ["М'язи Спини"] = { hash = 18046, comp = "ShouldersM" }, -- лопатки / м'язи спини
+        ["Розмір Грудей"] = { hash = 27779, comp = "ChestS" },
+        ["Ширина Талії"] = { hash = 50460, comp = "WaistW" },
+        ["Розмір Стегон"] = { hash = 49787, comp = "HipsS" }, -- ширина стегон / розмір живота
     },
 
     lowerbody = {
-        ["Tights Size"] = { hash = 64834, comp = "LegsS" },
-        ["Calves Size"] = { hash = 42067, comp = "CalvesS" },
+        ["Розмір Стегон"] = { hash = 64834, comp = "LegsS" },
+        ["Розмір Литок"] = { hash = 42067, comp = "CalvesS" },
     },
-
 }
 
 
