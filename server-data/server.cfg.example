@@ -1,0 +1,88 @@
+# Only change the IP if you're using a server with multiple network interfaces, otherwise change the port only.
+endpoint_add_tcp "0.0.0.0:30120"
+endpoint_add_udp "0.0.0.0:30120"
+
+set gamename rdr3
+
+# Dependencies
+ensure oxmysql
+ensure weathersync
+
+# These resources will start by default.
+ensure mapmanager
+ensure chat
+ensure spawnmanager
+ensure basic-gamemode
+ensure hardcap
+ensure rconlog
+
+# Permissions
+exec resources/[standalone]/weathersync/permissions.cfg
+
+# VORP resources
+ensure vorp_core
+ensure vorp_menu
+ensure vorp_inputs
+ensure vorp_character
+
+# This allows players to use scripthook-based plugins such as the legacy Lambda Menu.
+sv_scriptHookAllowed 0
+
+# Uncomment this and set a password to enable RCON
+#set rcon_password "CHANGEME"
+
+# A comma-separated list of tags for your server.
+sets tags "roleplay"
+
+# A valid locale identifier for your server's primary language.
+sets locale "en-US" 
+
+# Optional server banners
+#sets banner_detail "https://example.com/detail.png"
+#sets banner_connecting "https://example.com/connecting.png"
+
+# Set your server's hostname.
+sv_hostname "My RedM Server"
+
+# Set your server's Project Name
+sets sv_projectName "My Project Name"
+
+# Set your server's Project Description
+sets sv_projectDesc "Project description here"
+
+# Game Build
+#sv_enforceGameBuild 2802
+
+# Nested configs
+#exec server_internal.cfg
+
+# Loading a server icon (96x96 PNG file)
+#load_server_icon myLogo.png
+
+# Convars which can be used in scripts
+set temp_convar "hey world!"
+
+# Private server listing
+#sv_master1 ""
+
+# Add system admins
+add_ace group.admin command allow 
+add_ace group.admin command.quit deny 
+add_principal identifier.fivem:YOUR_IDENTIFIER_HERE group.admin 
+
+# enable OneSync (must be set in txAdmin)
+## [txAdmin CFG validator]: onesync MUST only be set in the txAdmin settings page.
+# set onesync on
+
+# Server player slot limit
+sv_maxclients 48
+
+# Steam Web API key (https://steamcommunity.com/dev/apikey)
+set steam_webApiKey "CHANGEME_STEAM_KEY"
+
+# License key for your server (https://portal.cfx.re)
+sv_licenseKey "CHANGEME_LICENSE_KEY"
+
+# MySQL connection string
+set mysql_connection_string "mysql://USER:PASSWORD@HOST:PORT/DBNAME?charset=utf8mb4"
+set mysql_slow_query_warning 200
