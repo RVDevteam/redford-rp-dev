@@ -8,12 +8,13 @@ Config.DevMode = false    -- if true you can restart script without having to re
 Config.Align = "top-left" -- menu position
 
 Config.MinAge = 18 -- minimum age required to create a character
+Config.MaxAge = 110 -- maximum age required to create a character
 
 --* when player choosing a name  make sure it doesn't contain any of the words in the list below
-Config.BannedNames = { "Arthur", "Marshton", "Shit", "Dick" } --* you can add more words
+Config.BannedNames = { "Arthur", "Marshton", "Shit", "Dick", "Mogran", "Pidor", "Gandon"} --* you can add more words
 
 -- allow player to delete character
-Config.AllowPlayerDeleteCharacter = true
+Config.AllowPlayerDeleteCharacter = false
 
 -- command to reload character
 Config.ReloadCharCommand = "rc"
