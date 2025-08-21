@@ -2,7 +2,7 @@
 --            VORP SHARED CONFIG             --
 --=============================================
 
-Lang = "English"
+Lang = "Ukrainian"
 Config = Config or {}
 
 Config = {

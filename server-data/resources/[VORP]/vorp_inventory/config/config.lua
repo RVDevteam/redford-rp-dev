@@ -1,4 +1,4 @@
-Lang = "English"
+Lang = "Ukrainian"
 
 Config = {
 	-- ======================= DEVELOPMENT ============================== --

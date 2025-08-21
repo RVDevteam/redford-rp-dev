@@ -201,7 +201,7 @@ local function GetDescriptionLayout(value, price)
     end
 end
 
--- Help function for structuring input prompts
+-- Функція для побудови структури вводу (залишаємо без змін для age та name)
 local function buildInputPrompt(context)
     local inputTypes = {
         age = {
@@ -209,20 +209,10 @@ local function buildInputPrompt(context)
             inputFieldType = "number",
             min = "0"
         },
-        nickname = {
-            inputType = "input",
-            inputFieldType = "text",
-            pattern = T.Inputs.inputlang
-        },
         name = {
             inputType = "input",
             inputFieldType = "text",
             pattern = T.Inputs.inputlang
-        },
-        desc = {
-            inputType = "textarea",
-            inputFieldType = "text",
-            pattern = T.Inputs.inputlangdesc
         }
     }
 
@@ -252,7 +242,7 @@ local function buildInputPrompt(context)
     }
 end
 
--- Standardize prompts (text, textarea, number input)
+-- Функція для обробки вводу
 local function handleInputPrompt(config, callback)
     TriggerEvent("vorpinputs:advancedInput", json.encode(config), function(result)
         local text = tostring(result)
@@ -262,7 +252,7 @@ local function handleInputPrompt(config, callback)
     end)
 end
 
--- Combine several menu.setElement calls and refresh
+-- Функція для оновлення елементів меню
 local function updateMenu(menu, updates)
     for _, update in ipairs(updates) do
         menu.setElement(update.index, update.key, update.value)
@@ -270,6 +260,75 @@ local function updateMenu(menu, updates)
     menu.refresh()
 end
 
+-- Нова функція для створення підменю вибору національності
+local function openNationalityMenu(menu, index, clothingtable, value)
+    local elements = {
+        {
+            label = "American",
+            value = "American",
+            desc = T.MenuCreation.element6.desc .. "<br><br>" .. Divider
+        },
+        {
+            label = "Mexican",
+            value = "Mexican",
+            desc = T.MenuCreation.element6.desc .. "<br><br>" .. Divider
+        },
+        {
+            label = "(Native American)Indian",
+            value = "Indian",
+            desc = T.MenuCreation.element6.desc .. "<br><br>" .. Divider
+        },
+        {
+            label = "German",
+            value = "German",
+            desc = T.MenuCreation.element6.desc .. "<br><br>" .. Divider
+        },
+        {
+            label = "Frenchman",
+            value = "Frenchman",
+            desc = T.MenuCreation.element6.desc .. "<br><br>" .. Divider
+        },
+        {
+            label = "Other",
+            value = "Other",
+            desc = T.MenuCreation.element6.desc .. "<br><br>" .. Divider
+        },
+
+    }
+
+    MenuData.Open('default', GetCurrentResourceName(), 'NationalityMenu',
+        {
+            title = T.MenuCreation.element6.label,
+            subtext = T.MenuCreation.subtitle,
+            align = Config.Align,
+            elements = elements,
+            itemHeight = "4vh"
+        },
+        function(data, subMenu)
+            local selectedNationality = data.current.value
+            if selectedNationality then
+                CHARACTER_DETAILS.desc = T.MenuCreation.element6.label .. opacity:format(selectedNationality) .. imgPath1:format("menu_icon_tick")
+                PLAYER_DATA.charDescription = selectedNationality
+
+                -- Оновлюємо головне меню
+                updateMenu(menu, {
+                    { index = index, key = "desc", value = imgPath:format("emote_greet_hey_you") .. "<br><br>" .. selectedNationality .. "<br><br>" .. Divider },
+                    { index = index, key = "label", value = CHARACTER_DETAILS.desc }
+                })
+                subMenu.close()
+                -- Повертаємо фокус до головного меню
+                OpenCharCreationMenu(clothingtable, value)
+            end
+        end,
+        function(data, subMenu)
+            subMenu.close()
+            -- Повернення до головного меню при закритті
+            OpenCharCreationMenu(clothingtable, value)
+        end
+    )
+end
+
+-- Основна функція створення персонажа
 function OpenCharCreationMenu(clothingtable, value)
     Title = IsInClothingStore and "Clothing Store" or T.MenuCreation.title
     local SubTitle = "<span style='font-size:25px;'>" .. T.MenuCreation.subtitle .. "</span><br><br>"
@@ -289,8 +348,7 @@ function OpenCharCreationMenu(clothingtable, value)
 
         elements[#elements + 1] = {
             label = T.MenuCreation.element2.label .. opacity:format(T.Secondchance.DescClothing),
-            value = "clothing",
-            desc = imgPath:format("clothing_generic_outfit") .. "<br> " .. T.MenuCreation.element2.desc .. "<br><br>" .. Divider
+            value = "clothing"
         }
         -- confirm pay
         if not IsInCharCreation then
@@ -303,7 +361,6 @@ function OpenCharCreationMenu(clothingtable, value)
         end
     end
 
-
     if IsInCharCreation then
         elements[#elements + 1] = {
             label = "Whistle" .. opacity:format("adjust whistle"),
@@ -314,30 +371,24 @@ function OpenCharCreationMenu(clothingtable, value)
             label = CHARACTER_DETAILS.age or T.MenuCreation.element5.label .. opacity:format(T.MenuCreation.none),
             value = "age",
             desc = imgPath:format("emote_greet_hey_you") .. "<br> " .. T.MenuCreation.element5.desc .. "<br><br>" .. Divider
-
         }
         elements[#elements + 1] = {
             label = CHARACTER_DETAILS.desc or T.MenuCreation.element6.label .. opacity:format(T.MenuCreation.none),
             value = "desc",
-            desc = imgPath:format("emote_greet_hey_you") .. "<br>" .. T.MenuCreation.element6.desc .. "<br><br>" .. Divider
-        }
-        elements[#elements + 1] = {
-            label = CHARACTER_DETAILS.nickname or T.MenuCreation.element7.label .. opacity:format(T.MenuCreation.none),
-            value = "nickname",
-            desc = imgPath:format("emote_greet_hey_you") .. "<br> " .. T.MenuCreation.element7.desc .. "<br>" .. T.MenuCreation.element7.desc2 .. "<br><br>" .. Divider
+            desc = imgPath:format("emote_greet_hey_you") .. "<br> " .. T.MenuCreation.element6.desc .. "<br><br>" .. Divider
         }
         elements[#elements + 1] = {
             label = CHARACTER_DETAILS.charname or T.MenuCreation.element3.label .. opacity:format(T.MenuCreation.none),
             value = "name",
             desc = imgPath:format("emote_greet_hey_you") .. "<br> " .. T.MenuCreation.element3.desc .. "<br><br>" .. Divider
-
         }
         elements[#elements + 1] = {
-            label = CHARACTER_DETAILS.label or ("<span style='color: Grey;'>" .. T.MenuCreation.element4.label .. "<br>" .. T.MenuCreation.finish .. "" .. "</span>"),
+            label = CHARACTER_DETAILS.label or ("<span style='color: Grey;'>" .. T.MenuCreation.element4.label .. "<br>" .. T.MenuCreation.finish .. "</span>"),
             value = CHARACTER_DETAILS.value or "not",
             desc = imgPath:format("generic_walk_style") .. "<br> " .. "<br><br>" .. Divider .. "" .. T.MenuCreation.element4.desc
         }
     end
+
     MenuData.Open('default', GetCurrentResourceName(), 'OpenCharCreationMenu',
         {
             title = Title,
@@ -346,9 +397,8 @@ function OpenCharCreationMenu(clothingtable, value)
             elements = elements,
             itemHeight = "4vh"
         },
-
         function(data, menu)
-            if (data.current.value == "buy") then
+            if data.current.value == "buy" then
                 local NewTable = GetNewCompOldStructure(PlayerClothing)
                 local result = Core.Callback.TriggerAwait("vorp_character:callback:PayForSecondChance", { skin = PlayerSkin, comps = NewTable, compTints = PlayerTrackingData })
                 if result then
@@ -359,59 +409,32 @@ function OpenCharCreationMenu(clothingtable, value)
                 return BackFromMenu(value)
             end
 
-            if (data.current.value == "clothing") then
+            if data.current.value == "clothing" then
                 return OpenClothingMenu(clothingtable, value)
             end
 
-            if (data.current.value == "appearance") then
+            if data.current.value == "appearance" then
                 return OpenAppearanceMenu(clothingtable, value)
             end
 
-            if (data.current.value == "whistle") then
+            if data.current.value == "whistle" then
                 return OpenWhistleMenu(clothingtable, value)
             end
 
-            if (data.current.value == "desc") then
-                local prompt = buildInputPrompt(data.current.value)
-
-                handleInputPrompt(prompt, function(result)
-                    local Result = tostring(result)
-                    if Result ~= nil and Result ~= "" then
-                        CHARACTER_DETAILS.desc = T.MenuCreation.element6.label .. opacity:format(T.MenuCreation.element6.desc2) .. imgPath1:format("menu_icon_tick")
-                        PLAYER_DATA.desc = Result
-
-                        updateMenu(menu, {
-                            { index = data.current.index, key = "desc", value = imgPath:format("emote_greet_hey_you") .. "<br><br>" .. Result .. "<br><br>" .. Divider },
-                            { index = data.current.index, key = "label", value = CHARACTER_DETAILS.desc }
-                        })
-                    end
-                end)
+            if data.current.value == "desc" then
+                openNationalityMenu(menu, data.current.index, clothingtable, value) -- Передаємо clothingtable та value
             end
 
-            -- nick name
-            if (data.current.value == "nickname") then
+            if data.current.value == "age" then
                 local prompt = buildInputPrompt(data.current.value)
-
-                handleInputPrompt(prompt, function(result)
-                    local Result = tostring(result)
-                    if Result ~= nil and Result ~= "" then
-                        CHARACTER_DETAILS.nickname = T.MenuCreation.element7.nickname .. "<br> <span style='opacity:0.6;'>" .. Result .. "</span>" .. imgPath1:format("menu_icon_tick")
-                        PLAYER_DATA.nickname = Result
-
-                        updateMenu(menu, {
-                            { index = data.current.index, key = "label", value = CHARACTER_DETAILS.nickname }
-                        })
-                    end
-                end)
-            end
-
-            if (data.current.value == "age") then
-                local prompt = buildInputPrompt(data.current.value)
-
                 handleInputPrompt(prompt, function(result)
                     local ageNumber = tonumber(result)
                     if not ageNumber or ageNumber < Config.MinAge then
-                        return Core.NotifyObjective("minimum age required is " .. Config.MinAge, 5000)
+                        return Core.NotifyObjective("Мiнiмальний дозволений вiк - " .. Config.MinAge, 5000)
+                    end
+
+                    if not ageNumber or ageNumber > Config.MaxAge then
+                        return Core.NotifyObjective("Максимальний дозволений вiк - " .. Config.MaxAge, 5000)
                     end
 
                     local label = T.MenuCreation.element5.label .. opacity:format(result) .. imgPath1:format("menu_icon_tick")
@@ -424,7 +447,7 @@ function OpenCharCreationMenu(clothingtable, value)
                 end)
             end
 
-            if (data.current.value == "name") then
+            if data.current.value == "name" then
                 local prompt = buildInputPrompt(data.current.value)
                 handleInputPrompt(prompt, function(result)
                     local Result = tostring(result)
@@ -460,7 +483,7 @@ function OpenCharCreationMenu(clothingtable, value)
                 end)
             end
 
-            if (data.current.value == "save") then
+            if data.current.value == "save" then
                 menu.close()
                 local NewTable = GetNewCompOldStructure(PlayerClothing)
                 PLAYER_DATA.skin = json.encode(PlayerSkin)
@@ -468,8 +491,8 @@ function OpenCharCreationMenu(clothingtable, value)
                 PLAYER_DATA.compTints = json.encode(PlayerTrackingData)
                 PLAYER_DATA.gender = GetGender()
                 PLAYER_DATA.age = PLAYER_DATA.age or 30
-                PLAYER_DATA.nickname = PLAYER_DATA.nickname or "none"
-                PLAYER_DATA.charDescription = PLAYER_DATA.desc or "none"
+                PLAYER_DATA.nickname = "none"
+                PLAYER_DATA.charDescription = PLAYER_DATA.charDescription or "American" -- Default to American if not set
                 -- start scenes
                 IsCharCreationFinished = true
                 local animscene = SetupScenes("Pl_Edit_to_Photo_" .. GetGender())
@@ -510,10 +533,22 @@ function OpenCharCreationMenu(clothingtable, value)
                 SetCamFocusDistance(NewCam, 1.0)
                 FinishCreation(animscene, animscene1)
             end
-        end, function(data, menu)
-
+        end,
+        function(data, menu)
+            -- Закриття меню без дій
         end)
 end
+
+-- Helper function to check if a value is in a table
+function table.contains(table, element)
+    for _, value in pairs(table) do
+        if value == element then
+            return true
+        end
+    end
+    return false
+end
+
 
 local function setWhistles(value, action)
     local ped <const> = PlayerPedId()
@@ -539,7 +574,7 @@ function OpenWhistleMenu(Table, value)
 
     --shape
     elements[#elements + 1] = {
-        label = "Style " .. opacity:format("adjust whistle style"),
+        label = "Style " .. opacity:format("Оберiть стиль свисту."),
         value = WHISTLE.style,
         type = "slider",
         min = 0.0,
