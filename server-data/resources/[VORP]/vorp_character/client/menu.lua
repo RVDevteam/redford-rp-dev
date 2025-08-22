@@ -1,6 +1,7 @@
 local Divider <const>           = "<img style='margin-top: 10px;margin-bottom: 20px; margin-left: -10px;'src='nui://" .. GetCurrentResourceName() .. "/images/divider_line.png'>"
 local imgPath <const>           = "<img style='max-height:500px;max-width:300px;float: center;'src='nui://" .. GetCurrentResourceName() .. "/images/%s.png'>"
 local imgPath1 <const>          = "<img style='max-height:20px;max-width:20px;margin-left: 10px;' src='nui://" .. GetCurrentResourceName() .. "/images/%s.png'>"
+local imgPath2 <const>          = "<img style='max-height:20px;max-width:20px;' src='nui://" .. GetCurrentResourceName() .. "/images/flags/%s.png'>"
 local path <const>              = "<img style='max-height:532px;max-width:344px;float: center;'src='nui://" .. GetCurrentResourceName() .. "/images/clothingfemale/%s.png'>"
 local opacity <const>           = "<br><span style='opacity:0.6;'>%s</span>"
 local CHARACTER_DETAILS <const> = {}
@@ -201,7 +202,7 @@ local function GetDescriptionLayout(value, price)
     end
 end
 
--- Функція для побудови структури вводу (залишаємо без змін для age та name)
+-- Функцiя для побудови структури вводу (залишаємо без змiн для age та name)
 local function buildInputPrompt(context)
     local inputTypes = {
         age = {
@@ -242,7 +243,7 @@ local function buildInputPrompt(context)
     }
 end
 
--- Функція для обробки вводу
+-- Функцiя для обробки вводу
 local function handleInputPrompt(config, callback)
     TriggerEvent("vorpinputs:advancedInput", json.encode(config), function(result)
         local text = tostring(result)
@@ -252,7 +253,7 @@ local function handleInputPrompt(config, callback)
     end)
 end
 
--- Функція для оновлення елементів меню
+-- Функцiя для оновлення елементiв меню
 local function updateMenu(menu, updates)
     for _, update in ipairs(updates) do
         menu.setElement(update.index, update.key, update.value)
@@ -260,40 +261,45 @@ local function updateMenu(menu, updates)
     menu.refresh()
 end
 
--- Нова функція для створення підменю вибору національності
-local function openNationalityMenu(menu, index, clothingtable, value)
+-- Функцiя для створення пiдменю вибору нацiональностi з слайдером
+local function openNationalityMenuWithConfirm(menu, index, clothingtable, value)
+    local nationalities = {
+        "American",
+        "African", 
+        "English", 
+        "French",
+        "German",
+        "Irish",
+        "Italian",
+        "Japanese",
+        "Mexican",
+        "Indian",
+        "Dutch",
+        "Polish", 
+        "Scottish",
+        "Spanish",
+        "Swedish",
+        "Ukrainian"
+    }
+    
+    local currentSelection = 1
+
     local elements = {
         {
-            label = "American",
-            value = "American",
-            desc = T.MenuCreation.element6.desc .. "<br><br>" .. Divider
+            label = T.MenuCreation.element6.label .. opacity:format(#nationalities .. " варiантiв"),
+            type = "slider",
+            value = currentSelection,
+            min = 1,
+            itemHeight = "5vh",
+            max = #nationalities,
+            desc = nationalities[currentSelection] .. "<br><br>" .. Divider
         },
         {
-            label = "Mexican",
-            value = "Mexican",
-            desc = T.MenuCreation.element6.desc .. "<br><br>" .. Divider
-        },
-        {
-            label = "(Native American)Indian",
-            value = "Indian",
-            desc = T.MenuCreation.element6.desc .. "<br><br>" .. Divider
-        },
-        {
-            label = "German",
-            value = "German",
-            desc = T.MenuCreation.element6.desc .. "<br><br>" .. Divider
-        },
-        {
-            label = "Frenchman",
-            value = "Frenchman",
-            desc = T.MenuCreation.element6.desc .. "<br><br>" .. Divider
-        },
-        {
-            label = "Other",
-            value = "Other",
-            desc = T.MenuCreation.element6.desc .. "<br><br>" .. Divider
-        },
-
+            label = "Пiдтвердити",
+            value = "confirm",
+            itemHeight = "3vh",
+            desc = "Зберегти обрану нацiональнiсть<br><br>" .. Divider
+        }
     }
 
     MenuData.Open('default', GetCurrentResourceName(), 'NationalityMenu',
@@ -302,33 +308,64 @@ local function openNationalityMenu(menu, index, clothingtable, value)
             subtext = T.MenuCreation.subtitle,
             align = Config.Align,
             elements = elements,
-            itemHeight = "4vh"
+            lastmenu = "OpenCharCreationMenu"
         },
         function(data, subMenu)
-            local selectedNationality = data.current.value
-            if selectedNationality then
+            -- Обробка backup
+            if (data.current == "backup") then
+                subMenu.close()
+                return OpenCharCreationMenu(clothingtable, value)
+            end
+            
+            if data.current.value == "confirm" then
+                local selectedNationality = nationalities[currentSelection]
+                
                 CHARACTER_DETAILS.desc = T.MenuCreation.element6.label .. opacity:format(selectedNationality) .. imgPath1:format("menu_icon_tick")
                 PLAYER_DATA.charDescription = selectedNationality
 
-                -- Оновлюємо головне меню
                 updateMenu(menu, {
-                    { index = index, key = "desc", value = imgPath:format("emote_greet_hey_you") .. "<br><br>" .. selectedNationality .. "<br><br>" .. Divider },
+                    { index = index, key = "desc", value = selectedNationality .. "<br><br>" .. Divider },
                     { index = index, key = "label", value = CHARACTER_DETAILS.desc }
                 })
+                
                 subMenu.close()
-                -- Повертаємо фокус до головного меню
-                OpenCharCreationMenu(clothingtable, value)
+                return OpenCharCreationMenu(clothingtable, value)
+            end
+            
+            if data.current.type == "slider" then
+                currentSelection = data.current.value
+                local selectedNationality = nationalities[currentSelection]
+                
+                if selectedNationality then
+                    local flagMap = {
+                        American = "usa", African = "afr", English = "eng", French = "fre",
+                        German = "ger", Irish = "irl", Italian = "ita", Japanese = "jap",
+                        Mexican = "mex", Indian = "ind", Dutch = "net", Polish = "pol",
+                        Scottish = "sco", Spanish = "spa", Swedish = "swe", Ukrainian = "ua"
+                    }
+                    
+                    print("RUSLIKSSS DEBUUUUGUGUUGUGUUGG")
+                    print(selectedNationality)
+                    print("RUSLIKSSS DEBUUUUGUGUUGUGUUGG")
+
+                    local FlagImage = imgPath2:format(flagMap[selectedNationality])
+                    
+                    -- Оновлюємо опис в реальному часi
+                    subMenu.setElement(1, "desc", "<br><br>" .. 
+                                                  selectedNationality .. " " .. FlagImage .. " " .. "<br><br>" .. 
+                                                  Divider .. "<br>Прокрутiть для вибору")
+                    subMenu.refresh()
+                end
             end
         end,
         function(data, subMenu)
             subMenu.close()
-            -- Повернення до головного меню при закритті
             OpenCharCreationMenu(clothingtable, value)
         end
     )
 end
 
--- Основна функція створення персонажа
+-- Основна функцiя створення персонажа
 function OpenCharCreationMenu(clothingtable, value)
     Title = IsInClothingStore and "Clothing Store" or T.MenuCreation.title
     local SubTitle = "<span style='font-size:25px;'>" .. T.MenuCreation.subtitle .. "</span><br><br>"
@@ -345,11 +382,6 @@ function OpenCharCreationMenu(clothingtable, value)
             value = "appearance",
             desc = imgPath:format("character_creator_head") .. "<br>" .. T.MenuCreation.element.desc .. "<br><br>" .. Divider
         }
-
-        elements[#elements + 1] = {
-            label = T.MenuCreation.element2.label .. opacity:format(T.Secondchance.DescClothing),
-            value = "clothing"
-        }
         -- confirm pay
         if not IsInCharCreation then
             local descLayout = GetDescriptionLayout({ img = "menu_icon_tick", desc = T.Inputs.confirmpurchase }, ConfigShops.SecondChancePrice)
@@ -362,6 +394,20 @@ function OpenCharCreationMenu(clothingtable, value)
     end
 
     if IsInCharCreation then
+        
+        print("RUSLIKSSS DEBUUUUGUGUUGUGUUGG")
+        print(CHARACTER_DETAILS.desc)
+        print("RUSLIKSSS DEBUUUUGUGUUGUGUUGG")
+
+        local flagMap = {
+                American = "usa", African = "afr", English = "eng", French = "fre",
+                German = "ger", Irish = "irl", Italian = "ita", Japanese = "jap",
+                Mexican = "mex", Indian = "ind", Dutch = "net", Polish = "pol",
+                Scottish = "sco", Spanish = "spa", Swedish = "swe", Ukrainian = "ua"
+            }
+        
+        local flagImage = imgPath2:format(flagMap[PLAYER_DATA.charDescription] or "usa")
+
         elements[#elements + 1] = {
             label = "Whistle" .. opacity:format("adjust whistle"),
             value = "whistle",
@@ -373,7 +419,7 @@ function OpenCharCreationMenu(clothingtable, value)
             desc = imgPath:format("emote_greet_hey_you") .. "<br> " .. T.MenuCreation.element5.desc .. "<br><br>" .. Divider
         }
         elements[#elements + 1] = {
-            label = CHARACTER_DETAILS.desc or T.MenuCreation.element6.label .. opacity:format(T.MenuCreation.none),
+            label = (CHARACTER_DETAILS.desc and CHARACTER_DETAILS.desc .. " " .. flagImage) or T.MenuCreation.element6.label .. opacity:format(T.MenuCreation.none),
             value = "desc",
             desc = imgPath:format("emote_greet_hey_you") .. "<br> " .. T.MenuCreation.element6.desc .. "<br><br>" .. Divider
         }
@@ -422,7 +468,7 @@ function OpenCharCreationMenu(clothingtable, value)
             end
 
             if data.current.value == "desc" then
-                openNationalityMenu(menu, data.current.index, clothingtable, value) -- Передаємо clothingtable та value
+                openNationalityMenuWithConfirm(menu, data.current.index, clothingtable, value)
             end
 
             if data.current.value == "age" then
@@ -535,7 +581,7 @@ function OpenCharCreationMenu(clothingtable, value)
             end
         end,
         function(data, menu)
-            -- Закриття меню без дій
+            -- Закриття меню без дiй
         end)
 end
 
