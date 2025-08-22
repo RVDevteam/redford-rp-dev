@@ -33,6 +33,7 @@ files {
 	'images/clothingfemale/*png',
 	'images/eyes/*png',
 	'images/skin/*png',
+	'images/flags/*png',
 }
 
 
